@@ -1,36 +1,27 @@
 class Solution {
-    int countPairs(int arr[], int target) {
-        int count=0;
-        int left = 0,right=arr.length-1;
-        while(left < right){
-            if(arr[left] + arr[right] < target){
-                left++;
+    public int countTriplet(int arr[]) {
+        Arrays.sort(arr);
+        HashSet<ArrayList<Integer>> set = new HashSet<>();
+        int i=0,j=i+1,count=0;
+        while(i < arr.length-2){
+            ArrayList<Integer> l = new ArrayList<>();
+            int sum = arr[i] + arr[j];
+            int k = j+1;
+            while(k < arr.length && sum > arr[k]){
+                k++;
             }
-            else if(arr[left] + arr[right] > target){
-                right--;
+            if(k < arr.length && arr[k] == sum){
+                l.add(arr[i]);
+                l.add(arr[j]);
+                l.add(arr[k]);
+                set.add(l);
             }
-            else{
-                if(arr[left] == arr[right]){
-                    int n = (right-left)+1;
-                    count += (n *(n-1))/2;
-                    return count;
-                }
-                else{
-                    int left_c=1,right_c=1;
-                    while(left < right && arr[left] == arr[left+1]){
-                        left++;
-                        left_c++;
-                    }
-                    while(left < right-1 && arr[right] == arr[right-1]){
-                        right--;
-                        right_c++;
-                    }
-                    count += (left_c * right_c);
-                    left++;
-                    right--;
-                }
+            j++;
+            if(j == arr.length-1){
+                i++;
+                j = i+1;
             }
         }
-        return count;
+        return set.size();
     }
 }
